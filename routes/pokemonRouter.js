@@ -1,22 +1,21 @@
 const express = require("express");
 const router = express.Router();
-const pokemon = require("../pokemon");
+const controller = require("../pokemon.controller");
 
 router.get("/", async (req, res) => {
-  console.log("get /");
-
-  const foundAllPokemon = await pokemon.findAll().catch(err => {
+  const foundAllPokemon = await controller.findAll().catch(err => {
     console.log(err);
     next(err);
   });
 
+  // console.log("foundAllPokemon", foundAllPokemon);
   res.status(200).send(foundAllPokemon);
 });
 
 router.post("/", async (req, res, next) => {
   // console.log(req.body);
 
-  const newPokemon = await pokemon.insertOne(req.body).catch(err => {
+  const newPokemon = await controller.insertOne(req.body).catch(err => {
     console.log(err);
     next(err);
   });
