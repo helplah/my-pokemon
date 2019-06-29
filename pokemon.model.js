@@ -1,10 +1,13 @@
-require("./db");
 const mongoose = require("mongoose");
 
 const pokemonSchema = new mongoose.Schema({
   id: { type: Number, require: true, unique: true },
-  name: { english: String, japanese: String, chinese: String },
-  type: [{ type: String, require: true }],
+  name: {
+    english: { type: String, required: true },
+    japanese: String,
+    chinese: String
+  },
+  type: [{ type: [String], require: true }],
   base: {
     HP: { type: Number, require: true },
     Attack: { type: Number, require: true },
