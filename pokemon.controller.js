@@ -3,21 +3,46 @@ const mongoose = require("mongoose");
 
 const PokemonModel = mongoose.model("Pokemon");
 
-module.exports.findAll = async () => {
+const findAll = async () => {
   try {
     return await PokemonModel.find();
-  } catch (error) {
-    console.log("err", error);
+  } catch (err) {
+    console.log("err", err);
   }
 };
 
-module.exports.insertOne = async pokemon => {
+const findOne = async id => {
+  try {
+    const pokemonId = { id };
+    return await PokemonModel.findOne(pokemonId);
+  } catch (err) {
+    console.log("err", err);
+  }
+};
+
+const insertOne = async pokemon => {
   try {
     const newPokemon = new PokemonModel(pokemon);
     return await newPokemon.save();
-  } catch (error) {
-    console.log("err", error);
+  } catch (err) {
+    console.log("err", err);
   }
 };
 
-// findOne, findAll, updateOne, deleteOne
+const updateOne = async id => {
+  try {
+    const pokemonId = { id };
+    return await PokemonModel.findOneAndUpdate(pokemonId);
+  } catch (err) {
+    console.log("err", err);
+  }
+};
+
+module.exports = {
+  findAll,
+  findOne,
+  insertOne,
+  updateOne
+};
+
+// updateOne, deleteOne

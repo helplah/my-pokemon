@@ -1,5 +1,8 @@
-const controller = require("../pokemon.controller");
+require("../db");
 const { MongoClient } = require("mongodb");
+const app = require("../app");
+const request = require("supertest");
+const pokemonData = require("../data/pokemon.data");
 
 describe("Pokemon", () => {
   let connection;
@@ -22,37 +25,69 @@ describe("Pokemon", () => {
     await db.close();
   });
 
-  describe("/pokemon", () => {
-    it("/GET should return all pokemon from database", () => {});
+  beforeEach(async () => {
+    await db.dropDatabase();
+  });
 
-    it("/POST should create a pokemon in database", () => {});
+  it("GET / should return Hello world", async () => {
+    const response = await request(app).get("/");
+
+    expect(response.text).toEqual("Hello world");
+  });
+
+  describe("/pokemon", () => {
+    it("/GET should find all pokemon from database", async () => {
+      const collection = db.collection("pokemons");
+      await collection.insertMany(pokemonData);
+
+      const response = await request(app).get("/pokemon");
+      expect(response.status).toEqual(200);
+      expect(response.body).toMatchObject(pokemonData);
+    });
+
+    it("/POST should create a pokemon in database", async () => {
+      const onePokemon = pokemonData[pokemonData.length - 1];
+
+      const collection = db.collection("pokemons");
+      await collection.insertOne(onePokemon);
+
+      const response = await request(app)
+        .post("/pokemon")
+        .send(onePokemon);
+
+      expect(response.status).toEqual(201);
+      expect(response.body.id).toEqual(onePokemon.id);
+      expect(response.body.name.english).toEqual(onePokemon.name.english);
+    });
   });
 
   describe("/pokemon/:id", () => {
     it("/GET should return a pokemon", async () => {
-      const pikachu = {
-        id: 25,
-        name: { english: "Pikachu", japanese: "ピカチュウ", chinese: "皮卡丘" },
-        type: ["Electric"],
-        base: {
-          HP: 35,
-          Attack: 9999,
-          Defense: 40,
-          SpAttack: 50,
-          SpDefence: 50,
-          Speed: 90
-        }
-      };
+      const collection = db.collection("pokemons");
+      await collection.insertMany(pokemonData);
 
-      await controller.insertOne(pikachu);
-      const pokemonCollection = db.collection("pokemons");
-      const mockPokemon = { id: 25 };
+      const pikachuId = 25;
 
-      const foundPokemon = await pokemonCollection.findOne(mockPokemon);
-      expect(foundPokemon.name.english).toEqual("Pikachu");
+      const response = await request(app).get(`/pokemon/${pikachuId}`);
+      expect(response.status).toEqual(200);
+      expect(response.body.name.english).toEqual("Pikachu");
     });
 
-    it("/PUT should modify a pokemon from database", () => {});
+    it("/PUT should modify a pokemon from database", async () => {
+      const collection = db.collection("pokemons");
+      await collection.insertMany(pokemonData);
+
+      const pikachuId = 25;
+
+      const response = await request(app)
+        .put(`/pokemon/${pikachuId}`)
+        .send({ "base.HP": 1 });
+
+      // console.log(response.body);
+      expect(response.status).toEqual(200);
+      expect(response.body.name.english).toEqual("Pikachu");
+      expect(response.body.base.HP).toEqual(1);
+    });
 
     it("/DELETE should remove a pokemon from database", () => {});
   });
