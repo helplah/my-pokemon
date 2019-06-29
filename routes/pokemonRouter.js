@@ -30,8 +30,10 @@ router.get("/:id", async (req, res, next) => {
 });
 
 router.put("/:id", async (req, res, next) => {
+  console.log("req.body", req.body);
+
   const updateOnePokemon = await controller
-    .updateOne(req.params.id)
+    .updateOne(req.params.id, req.body)
     .catch(err => {
       console.log(err);
       next(err);

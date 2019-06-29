@@ -31,7 +31,6 @@ describe("Pokemon", () => {
 
   it("GET / should return Hello world", async () => {
     const response = await request(app).get("/");
-
     expect(response.text).toEqual("Hello world");
   });
 
@@ -47,7 +46,6 @@ describe("Pokemon", () => {
 
     it("/POST should create a pokemon in database", async () => {
       const onePokemon = pokemonData[pokemonData.length - 1];
-
       const collection = db.collection("pokemons");
       await collection.insertOne(onePokemon);
 
@@ -66,9 +64,9 @@ describe("Pokemon", () => {
       const collection = db.collection("pokemons");
       await collection.insertMany(pokemonData);
 
-      const pikachuId = 25;
+      const id = 25;
+      const response = await request(app).get(`/pokemon/${id}`);
 
-      const response = await request(app).get(`/pokemon/${pikachuId}`);
       expect(response.status).toEqual(200);
       expect(response.body.name.english).toEqual("Pikachu");
     });
@@ -77,18 +75,25 @@ describe("Pokemon", () => {
       const collection = db.collection("pokemons");
       await collection.insertMany(pokemonData);
 
-      const pikachuId = 25;
-
+      const id = 25;
       const response = await request(app)
-        .put(`/pokemon/${pikachuId}`)
+        .put(`/pokemon/${id}`)
         .send({ "base.HP": 1 });
 
-      // console.log(response.body);
       expect(response.status).toEqual(200);
       expect(response.body.name.english).toEqual("Pikachu");
       expect(response.body.base.HP).toEqual(1);
     });
 
-    it("/DELETE should remove a pokemon from database", () => {});
+    it("/DELETE should remove a pokemon from database", async () => {
+      const collection = db.collection("pokemons");
+      await collection.insertMany(pokemonData);
+
+      const id = 25;
+      const response = await request(app).delete(`/pokemon/${id}`);
+
+      expect(response.status).toEqual(200);
+      expect(response.body.name.english).toEqual("Pikachu");
+    });
   });
 });

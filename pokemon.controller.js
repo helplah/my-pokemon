@@ -29,10 +29,12 @@ const insertOne = async pokemon => {
   }
 };
 
-const updateOne = async id => {
+const updateOne = async (id, payload) => {
   try {
     const pokemonId = { id };
-    return await PokemonModel.findOneAndUpdate(pokemonId);
+    return await PokemonModel.findOneAndUpdate(pokemonId, payload, {
+      new: true
+    });
   } catch (err) {
     console.log("err", err);
   }
