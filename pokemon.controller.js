@@ -40,11 +40,19 @@ const updateOne = async (id, payload) => {
   }
 };
 
+const deleteOne = async id => {
+  try {
+    const pokemonId = { id };
+    return await PokemonModel.findOneAndDelete(pokemonId);
+  } catch (err) {
+    console.log("err", err);
+  }
+};
+
 module.exports = {
   findAll,
   findOne,
   insertOne,
-  updateOne
+  updateOne,
+  deleteOne
 };
-
-// updateOne, deleteOne
