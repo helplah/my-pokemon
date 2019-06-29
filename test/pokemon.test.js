@@ -60,11 +60,11 @@ describe("Pokemon", () => {
   });
 
   describe("/pokemon/:id", () => {
+    const id = 25; // Pikachu id
+
     it("/GET should return a pokemon", async () => {
       const collection = db.collection("pokemons");
       await collection.insertMany(pokemonData);
-
-      const id = 25;
       const response = await request(app).get(`/pokemon/${id}`);
 
       expect(response.status).toEqual(200);
@@ -74,8 +74,6 @@ describe("Pokemon", () => {
     it("/PUT should modify a pokemon from database", async () => {
       const collection = db.collection("pokemons");
       await collection.insertMany(pokemonData);
-
-      const id = 25;
       const response = await request(app)
         .put(`/pokemon/${id}`)
         .send({ "base.HP": 1 });
@@ -88,8 +86,6 @@ describe("Pokemon", () => {
     it("/DELETE should remove a pokemon from database", async () => {
       const collection = db.collection("pokemons");
       await collection.insertMany(pokemonData);
-
-      const id = 25;
       const response = await request(app).delete(`/pokemon/${id}`);
 
       expect(response.status).toEqual(200);

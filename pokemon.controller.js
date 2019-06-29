@@ -7,7 +7,7 @@ const findAll = async () => {
   try {
     return await PokemonModel.find();
   } catch (err) {
-    console.log("err", err);
+    console.log("Controller findAll", err);
   }
 };
 
@@ -16,7 +16,7 @@ const findOne = async id => {
     const pokemonId = { id };
     return await PokemonModel.findOne(pokemonId);
   } catch (err) {
-    console.log("err", err);
+    console.log("Controller findOne", err);
   }
 };
 
@@ -25,7 +25,7 @@ const insertOne = async pokemon => {
     const newPokemon = new PokemonModel(pokemon);
     return await newPokemon.save();
   } catch (err) {
-    console.log("err", err);
+    console.log("Controller insertOne", err);
   }
 };
 
@@ -36,7 +36,7 @@ const updateOne = async (id, payload) => {
       new: true
     });
   } catch (err) {
-    console.log("err", err);
+    console.log("Controller updateOne", err);
   }
 };
 
@@ -45,7 +45,7 @@ const deleteOne = async id => {
     const pokemonId = { id };
     return await PokemonModel.findOneAndDelete(pokemonId);
   } catch (err) {
-    console.log("err", err);
+    console.log("Controller deleteOne", err);
   }
 };
 
