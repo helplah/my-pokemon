@@ -4,49 +4,29 @@ const mongoose = require("mongoose");
 const PokemonModel = mongoose.model("Pokemon");
 
 const findAll = async () => {
-  try {
-    return await PokemonModel.find();
-  } catch (err) {
-    console.log("Controller findAll", err);
-  }
+  return await PokemonModel.find();
 };
 
 const findOne = async id => {
-  try {
-    const pokemonId = { id };
-    return await PokemonModel.findOne(pokemonId);
-  } catch (err) {
-    console.log("Controller findOne", err);
-  }
+  const pokemonId = { id };
+  return await PokemonModel.findOne(pokemonId);
 };
 
 const insertOne = async pokemon => {
-  try {
-    const newPokemon = new PokemonModel(pokemon);
-    return await newPokemon.save();
-  } catch (err) {
-    console.log("Controller insertOne", err);
-  }
+  const newPokemon = new PokemonModel(pokemon);
+  return await newPokemon.save();
 };
 
 const updateOne = async (id, payload) => {
-  try {
-    const pokemonId = { id };
-    return await PokemonModel.findOneAndUpdate(pokemonId, payload, {
-      new: true
-    });
-  } catch (err) {
-    console.log("Controller updateOne", err);
-  }
+  const pokemonId = { id };
+  return await PokemonModel.findOneAndUpdate(pokemonId, payload, {
+    new: true
+  });
 };
 
 const deleteOne = async id => {
-  try {
-    const pokemonId = { id };
-    return await PokemonModel.findOneAndDelete(pokemonId);
-  } catch (err) {
-    console.log("Controller deleteOne", err);
-  }
+  const pokemonId = { id };
+  return await PokemonModel.findOneAndDelete(pokemonId);
 };
 
 module.exports = {
