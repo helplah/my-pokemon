@@ -1,6 +1,6 @@
-require("../db");
+require("../src/utils/db");
 const { MongoClient } = require("mongodb");
-const app = require("../app");
+const app = require("../src/app");
 const request = require("supertest");
 const pokemonData = require("../data/pokemon.data");
 

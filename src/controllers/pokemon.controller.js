@@ -1,4 +1,4 @@
-require("./pokemon.model");
+require("../models/pokemon.model");
 const mongoose = require("mongoose");
 
 const PokemonModel = mongoose.model("Pokemon");

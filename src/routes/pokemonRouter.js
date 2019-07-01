@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const controller = require("../pokemon.controller");
+const controller = require("../controllers/pokemon.controller");
 
 router.get("/", async (req, res, next) => {
   const getAllPokemon = await controller.findAll().catch(err => next(err));
